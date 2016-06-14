@@ -1,4 +1,4 @@
-import * as testMap from './tests/tests';
+import * as _ from './helpers';
 
 /*----------------------------------------------------------
 	Constructs
@@ -7,7 +7,7 @@ import * as testMap from './tests/tests';
 function createResult(name = 'all', result = true, value) {
 
 	// if the result is a function, assume the value is being mapped, so pass true as the real result and set the value as the fn result
-	if (_.isFunction(result)) {
+	if (typeof result === 'function') {
 		value = result();
 		result = true;
 	}
@@ -26,7 +26,7 @@ function createResult(name = 'all', result = true, value) {
 // Returns a function that will return the result of a testFn if the value being passed in exists
 function runIfValue(testFn) {
 	return function(value) {
-		if (_.isNull(value) || _.isUndefined(value) || (value + '').length === 0) {
+		if (value == undefined || (value + '').length === 0) {
 			return true;
 		}
 		return testFn(value);
@@ -37,7 +37,7 @@ function runIfValue(testFn) {
 function composeTest(name, testFn, required) {
 	return function() {
 
-		let additionalArgs = _.toArray(arguments);
+		let additionalArgs = [...arguments];
 		let boundFn = _.partial(testFn, ...additionalArgs);
 
 		if (!required) {
@@ -52,77 +52,85 @@ function composeTest(name, testFn, required) {
 	Tests
 ----------------------------------------------------------*/
 
-const tests = _.mapObject(testMap, (value, key) => composeTest(key, value));
+const standardTests = {};
 
 // Make your own test passing (fn) argument which can either be a predicate or regex
-tests.testWith = function(name, fn) {
+standardTests.testWith = function(name, fn) {
 	let testFn = fn instanceof RegExp ? (value => fn.test(value)) : fn;
 	return makeRule.call(this, name, runIfValue(testFn));
-}
+};
 
 // maps a value into another one and passes it along the chain. This works by returning a function instead of a boolean. The function will be
 // evaluated in the create result method.
-tests.mapValue = function(fn) {
+standardTests.mapValue = function(fn) {
 	return makeRule.call(this, 'mapValue', (value) => _.partial(fn, value));	
 };
 
-tests.required = composeTest('required', value => (_.toString(value).length > 0), true);
+standardTests.required = composeTest('required', value => ((value + '').length > 0), true);
 
 /*----------------------------------------------------------
 	Export
 ----------------------------------------------------------*/
 
-export function makeRule(name, fn = value => true) {
+export default function validator(testMap) {
+		
+	testMap = _.assign({}, testMap, standardTests);
 
-	let prevFn = this;
+	const tests = _.mapObject(testMap, (value, key) => composeTest(key, value));
 
-	let runFn = function(value) {
-		if (prevFn && prevFn.validator === true) {
-			let prevOutcome = prevFn(value);
-			if (prevOutcome.result === false) {
-				return prevOutcome
-			}
-			if (!_.isUndefined(prevOutcome.value)) {
-				return createResult(name, fn(prevOutcome.value), prevOutcome.value);		
-			}
-		}
-		return createResult(name, fn(value), value);
-	}
+	const makeRule = function(name, fn = value => true) {
 
-	let boundTests = _.mapObject(tests, testFn => _.bind(testFn, runFn));
-	return _.assign(runFn, boundTests, { validator: true });
+		let prevFn = this;
 
-}
-
-export function validateWith(validator, errorMap, defaultMsg) {
-
-	var evaluateError;
-
-	if ( _.isObject(errorMap)) {
-
-		 evaluateError = (report) => {
-			for (let key in errorMap) {
-				if (key === report.test) {
-					return errorMap[key];
+		let runFn = function(value) {
+			if (prevFn && prevFn.validator === true) {
+				let prevOutcome = prevFn(value);
+				if (prevOutcome.result === false) {
+					return prevOutcome
+				}
+				if (prevOutcome.value != undefined) {
+					return createResult(name, fn(prevOutcome.value), prevOutcome.value);		
 				}
 			}
-			return defaultMsg;
+			return createResult(name, fn(value), value);
 		}
 
-	} else {
-		defaultMsg = errorMap;
-		evaluateError = report => {
-			return defaultMsg;
+		let boundTests = _.mapValues(tests, testFn => testFn.bind(runFn));
+		return _.assign(runFn, boundTests, { validator: true });
+
+	}
+
+	const validateWith = function(validator, errorMap, defaultMsg) {
+
+		var evaluateError;
+
+		if (typeof errorMap === 'object') {
+
+			 evaluateError = (report) => {
+				for (let key in errorMap) {
+					if (key === report.test) {
+						return errorMap[key];
+					}
+				}
+				return defaultMsg;
+			}
+
+		} else {
+			defaultMsg = errorMap;
+			evaluateError = report => {
+				return defaultMsg;
+			}
+		}
+
+		return function(value) {
+			let report = validator(value);
+			if (report.result === false) {
+				return _.assign(report, { message: evaluateError(report) });
+			}
+			return report;
 		}
 	}
 
-	return function(value) {
-		let report = validator(value);
-		if (report.result === false) {
-			return _.extend(report, { message: evaluateError(report) });
-		}
-		return report;
-	}
+	return { makeRule, validateWith };
+
 }
-
-export default { makeRule, validateWith };

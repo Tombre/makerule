@@ -7,6 +7,7 @@ import testCreditCard from 'validator/lib/isCreditCard';
 import testDate from 'validator/lib/isDate';
 import isBefore from 'validator/lib/isBefore';
 import testURL from 'validator/lib/isURL';
+import testDecimal from 'validator/lib/isDecimal';
 import testHexColor from 'validator/lib/isHexColor';
 import isAfter from 'validator/lib/isAfter';
 
@@ -14,8 +15,8 @@ import isAfter from 'validator/lib/isAfter';
 export const equals = (match, value) => (match === value);
 
 // types
-export const isString = value => _.isString(value);
-export const isNumber = value => _.isFinite(value);
+export const isString = value => (typeof value === 'string');
+export const isNumber = value => (typeof value === 'number' && !isNaN(value));
 export const isInt = (n, value) => (isNumber(value) && (n % 1 === 0));
 export const isFloat = (n, value) => (isNumber(value) && (n % 1 !== 0));
 
@@ -27,6 +28,7 @@ export const isBeforeDate = (date, value) => isBefore(value, date);
 export const isAfterDate = (date, value) => isAfter(value, date);
 export const isAlpha = value => testAlpha(value);
 export const isAlphanumeric = value => testAlphanumeric(value);
+export const isDecimal = value => testDecimal(value);
 export const isNumeric = value => testNumeric(value);
 export const isNumericFloat = value => testNumericFloat(value);
 export const isHexColor = value => testHexColor(value);
@@ -38,3 +40,6 @@ export const shorterThen = (n, value) => (value.length < n);
 export const divisableBy = (n, value) => (value % n === 0);
 export const greaterThen = (n, value) => (value > n);
 export const lessThen = (n, value) => (value < n);
+
+
+// Bool
