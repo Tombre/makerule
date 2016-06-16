@@ -1,14 +1,16 @@
 {
   "name": "isvalid",
   "version": "1.0.0",
-  "description": "A simple functional library for creating custom validation rules",
-  "main": "lib/isvalid.js",
+  "description": "A simple and functional validation library for creating custom validation rules",
+  "main": "dist",
   "scripts": {
     "bundle": "WEBPACK_ENV=bundle ./node_modules/webpack/bin/webpack.js",
     "compile": "WEBPACK_ENV=compile ./node_modules/webpack/bin/webpack.js",
     "test": "./node_modules/babel-tape-runner/bin/babel-tape-runner ./tests/**/*.js | ./node_modules/faucet/bin/cmd.js",
-    "build": "rm -r ./lib/* &&  npm run bundle && npm run compile && ./node_modules/uglify-js/bin/uglifyjs ./lib/isvalid.js -c -m -o ./lib/isvalid.min.js --source-map ./lib/isvalid.min.js.map",
-    "dev": "npm run bundle -- --progress --colors --watch"
+    "build": "rm -rf ./dist/* &&  npm run bundle && npm run compile && ./node_modules/uglify-js/bin/uglifyjs ./dist/index.js -c -m -o ./dist/index.min.js --source-map ./dist/index.min.js.map",
+    "dev": "npm run bundle -- --progress --colors --watch",
+    "preversion": "npm run test && npm run build && git commit --allow-empty -am \"Update dist\"",
+    "prepublish": "npm run dist:modules"
   },
   "keywords": [
     "validate",
@@ -32,9 +34,7 @@
     "webpack": "^1.13.1"
   },
   "dependencies": {
-    "lodash.assign": "^4.0.9",
-    "lodash.mapvalues": "^4.4.0",
-    "lodash.partial": "^4.1.4",
+    "partial": "0.0.4",
     "validator": "^5.4.0"
   }
 }
