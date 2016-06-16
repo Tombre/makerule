@@ -1,6 +1,6 @@
 import Validator from './validator';
 import * as testMap from './tests';
 
-const validator = Validator(testMap);
+const validator = new Validator(testMap);
 
 export default validator;
