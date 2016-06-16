@@ -9,7 +9,7 @@ var bundleConfig = {
 		tests: path.join(__dirname, 'src', 'tests'),
 	},
 	output: {
-		path: path.join(__dirname, 'lib'),
+		path: path.join(__dirname, 'dist'),
 		filename: "[name].js",
 		libraryTarget: 'umd',
 		library: ["isValid", "[name]"],
@@ -20,8 +20,8 @@ var bundleConfig = {
 var compileConfig = {
 	entry: path.join(__dirname, 'src', 'index'),
 	output: {
-		path: path.join(__dirname, 'lib'),
-		filename: "isValid.js",
+		path: path.join(__dirname, 'dist'),
+		filename: "index.js",
 		libraryTarget: 'umd',
 		library: 'isValid',
 		umdNamedDefine: true
