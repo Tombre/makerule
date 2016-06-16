@@ -1,4 +1,4 @@
-import * as _ from './helpers';
+import partial from 'lodash.partial';
 
 export default function validator(testMap) {
 
@@ -25,6 +25,27 @@ export default function validator(testMap) {
 		Helper
 	----------------------------------------------------------*/
 
+	// assigns source objects props/vals to the first object in the arguments
+	 function assign() {
+		let objs = [...arguments].slice(1);
+		let result = arguments[0];
+		for (let i = 0; i < objs.length; i++) {
+			let obj = objs[i];
+			for (let key in obj) {
+				result[key] = obj[key];
+			}
+		}
+		return result;
+	}
+
+	function mapValues(obj, fn) {
+		let result = {};
+		for (let key in obj) {
+			result[key] = fn(obj[key], key);
+		}
+		return result;
+	}
+
 	// Returns a function that will return the result of a testFn if the value being passed in exists
 	function runIfValue(testFn) {
 		return function(value) {
@@ -40,13 +61,13 @@ export default function validator(testMap) {
 		return function() {
 
 			let additionalArgs = [...arguments];
-			let boundFn = _.partial(testFn, ...additionalArgs);
+			let assignedArgsFn = partial(testFn, ...additionalArgs);
 
 			if (!required) {
-				boundFn = runIfValue(boundFn);
+				assignedArgsFn = runIfValue(testFn);
 			}
 
-			return makeRule.call(this, name, boundFn);
+			return makeRule.call(this, name, assignedArgsFn);
 		}
 	}
 
@@ -65,13 +86,13 @@ export default function validator(testMap) {
 	// maps a value into another one and passes it along the chain. This works by returning a function instead of a boolean. The function will be
 	// evaluated in the create result method.
 	standardTests.mapValue = function(fn) {
-		return makeRule.call(this, 'mapValue', (value) => _.partial(fn, value));	
+		return makeRule.call(this, 'mapValue', (value) => partial(fn, value));	
 	};
 
 	standardTests.required = composeTest('required', value => ((value + '').length > 0), true);
 
-	testMap = _.assign({}, testMap, standardTests);
-	const tests = _.mapValues(testMap, (value, key) => composeTest(key, value));
+	const composedTests = mapValues(testMap, (value, key) => composeTest(key, value));
+	const tests = assign({}, composedTests, standardTests);
 
 	/*----------------------------------------------------------
 		Export
@@ -88,14 +109,14 @@ export default function validator(testMap) {
 					return prevOutcome
 				}
 				if (prevOutcome.value != undefined) {
-					return createResult(name, fn(prevOutcome.value), prevOutcome.value);		
+					return createResult(name, fn(prevOutcome.value), prevOutcome.value);	
 				}
 			}
 			return createResult(name, fn(value), value);
 		}
 
-		let boundTests = _.mapValues(tests, testFn => testFn.bind(runFn));
-		return _.assign(runFn, boundTests, { validator: true });
+		let boundTests = mapValues(tests, testFn => testFn.bind(runFn));
+		return assign(runFn, boundTests, { validator: true });
 
 	}
 
@@ -124,7 +145,7 @@ export default function validator(testMap) {
 		return function(value) {
 			let report = validator(value);
 			if (report.result === false) {
-				return _.assign(report, { message: evaluateError(report) });
+				return assign(report, { message: evaluateError(report) });
 			}
 			return report;
 		}

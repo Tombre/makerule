@@ -4,8 +4,8 @@
   "description": "A simple functional library for creating custom validation rules",
   "main": "lib/isvalid.js",
   "scripts": {
-    "bundle" : "WEBPACK_ENV=bundle ./node_modules/webpack/bin/webpack.js",
-    "compile" : "WEBPACK_ENV=compile ./node_modules/webpack/bin/webpack.js",
+    "bundle": "WEBPACK_ENV=bundle ./node_modules/webpack/bin/webpack.js",
+    "compile": "WEBPACK_ENV=compile ./node_modules/webpack/bin/webpack.js",
     "test": "./node_modules/babel-tape-runner/bin/babel-tape-runner ./tests/**/*.js | ./node_modules/faucet/bin/cmd.js",
     "build": "rm -r ./lib/* &&  npm run bundle && npm run compile && ./node_modules/uglify-js/bin/uglifyjs ./lib/isvalid.js -c -m -o ./lib/isvalid.min.js --source-map ./lib/isvalid.min.js.map",
     "dev": "npm run bundle -- --progress --colors --watch"
@@ -32,6 +32,9 @@
     "webpack": "^1.13.1"
   },
   "dependencies": {
+    "lodash.assign": "^4.0.9",
+    "lodash.mapvalues": "^4.4.0",
+    "lodash.partial": "^4.1.4",
     "validator": "^5.4.0"
   }
 }
