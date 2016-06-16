@@ -1,5 +1,5 @@
 {
-  "name": "isvalid",
+  "name": "makerule",
   "version": "1.0.0",
   "description": "A simple and functional validation library for creating custom validation rules",
   "main": "dist",

@@ -12,7 +12,7 @@ var bundleConfig = {
 		path: path.join(__dirname, 'dist'),
 		filename: "[name].js",
 		libraryTarget: 'umd',
-		library: ["isValid", "[name]"],
+		library: ["makeRule", "[name]"],
 		umdNamedDefine: true
 	},
 };
@@ -23,7 +23,7 @@ var compileConfig = {
 		path: path.join(__dirname, 'dist'),
 		filename: "index.js",
 		libraryTarget: 'umd',
-		library: 'isValid',
+		library: 'makeRule',
 		umdNamedDefine: true
 	},
 };
