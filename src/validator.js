@@ -1,4 +1,4 @@
-import partial from 'lodash.partial';
+import partial from 'partial';
 
 export default function validator(testMap) {
 
