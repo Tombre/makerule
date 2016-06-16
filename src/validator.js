@@ -60,11 +60,10 @@ export default function validator(testMap) {
 	function composeTest(name, testFn, required) {
 		return function() {
 
-			let additionalArgs = [...arguments];
-			let assignedArgsFn = partial(testFn, ...additionalArgs);
+			let assignedArgsFn = partial(testFn, ...arguments);
 
 			if (!required) {
-				assignedArgsFn = runIfValue(testFn);
+				assignedArgsFn = runIfValue(assignedArgsFn);
 			}
 
 			return makeRule.call(this, name, assignedArgsFn);
