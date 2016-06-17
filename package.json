@@ -10,7 +10,11 @@
     "build": "rm -rf ./dist/* &&  npm run bundle && npm run compile && ./node_modules/uglify-js/bin/uglifyjs ./dist/index.js -c -m -o ./dist/index.min.js --source-map ./dist/index.min.js.map",
     "dev": "npm run bundle -- --progress --colors --watch",
     "preversion": "npm run test && npm run build && git commit --allow-empty -am \"Update dist\"",
-    "prepublish": "npm run dist:modules"
+    "prepublish": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/Tombre/makerule.git"
   },
   "keywords": [
     "validate",
