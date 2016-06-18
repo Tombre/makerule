@@ -7,7 +7,7 @@
     "bundle": "WEBPACK_ENV=bundle ./node_modules/webpack/bin/webpack.js",
     "compile": "WEBPACK_ENV=compile ./node_modules/webpack/bin/webpack.js",
     "test": "./node_modules/babel-tape-runner/bin/babel-tape-runner ./tests/**/*.js | ./node_modules/faucet/bin/cmd.js",
-    "build": "rm -rf ./dist/* &&  npm run bundle && npm run compile && ./node_modules/uglify-js/bin/uglifyjs ./dist/index.js -c -m -o ./dist/index.min.js --source-map ./dist/index.min.js.map",
+    "build": "rm -rf ./dist/* &&  npm run bundle && npm run compile && ./node_modules/uglify-js/bin/uglifyjs ./dist/index.js -c -m -o ./dist/makeRule.min.js --source-map ./dist/makeRule.min.js.map",
     "dev": "npm run bundle -- --progress --colors --watch",
     "preversion": "npm run test && npm run build && git commit --allow-empty -am \"Update dist\"",
     "prepublish": "npm run build"
