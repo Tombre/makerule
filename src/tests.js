@@ -1,7 +1,6 @@
 import testEmail from 'validator/lib/isEmail';
 import testAlphanumeric from 'validator/lib/isAlphanumeric';
 import testNumeric from 'validator/lib/isNumeric';
-import testNumericFloat from 'validator/lib/isFloat';
 import testAlpha from 'validator/lib/isAlpha';
 import testCreditCard from 'validator/lib/isCreditCard';
 import testDate from 'validator/lib/isDate';
@@ -29,7 +28,6 @@ export const isAlpha = value => isString(value) && testAlpha(value);
 export const isAlphanumeric = value => isString(value) && testAlphanumeric(value);
 export const isDecimalString = value => isString(value) && testDecimal(value);
 export const isNumeric = value => isString(value) && testNumeric(value);
-export const isNumericFloat = value => isString(value) && testNumericFloat(value);
 export const isHexColor = value => isString(value) && testHexColor(value);
 export const isURL = value => isString(value) && testURL(value);
 
