@@ -43,7 +43,7 @@ var ruleRequired = rule.required();
 rule(undefined); // => { result: false, test: required, value: undefined }
 ```
 
-You can also write your own tests. To do this, add `.testWith()` to the chain and pass the name of the test, and a predicate function or a regular expression. That function will recieve the current value as an argument. Return a boolean true or false to describe if the test passed or failed.
+You can also write your own tests. To do this, add `.testWith()` to the chain and pass the name of the test, and a predicate function or a regular expression. That function will receive the current value as an argument. Return a boolean true or false to describe if the test passed or failed.
 
 ```javascript
 var testForHiwithFunction = makerule.rule().isString().testWith('hasHi', value => (value.indexOf('hi') >= 0));
@@ -85,7 +85,7 @@ testPassword('Areallyg00dp@ssw0rd'); // => { result: true, value: 'Areallyg00dp@
 ### Making Rules
 
 - **rule()** - Creates a test function that you can chain together to create more complex tests. Returns a result object.
-- **validateWith(rule, messageMap [, defaultMessage])** Returns a result object with an additional `message` perameter. The `message` perameter is equal to value of the test name that you have passed to `messageMap`. If the test name does not exist, the `defaultMessage` will be returned (or `undefined` if none is passed).
+- **validateWith(rule, messageMap [, defaultMessage])** Returns a result object with an additional `message` parameter. The `message` parameter is equal to value of the test name that you have passed to `messageMap`. If the test name does not exist, the `defaultMessage` will be returned (or `undefined` if none is passed).
 
 ## The Result Object
 
@@ -152,7 +152,7 @@ Object/Array:
 
 ### Helper tests
 
-- **testWith(testName, [fn, regexp])** - Tests a value using a predicate function or regular expression. If you pass a function, that function will recieve the current value as the first arguement and must return true or false. If you pass a regular expression, the value will be tested against that regular expression.
+- **testWith(testName, [fn, regexp])** - Tests a value using a predicate function or regular expression. If you pass a function, that function will receive the current value as the first arguement and must return true or false. If you pass a regular expression, the value will be tested against that regular expression.
 - **mapValue(fn)** - Changes the value being tested at that point in the chain where `fn` is a function the recieves the current value as the first arguemnt and returns another value.
 - **required()** - Tests that the value is not `undefined` or `Null`. If you do not add `required()` to the chain, values will pass through un-tested.
  
@@ -160,9 +160,9 @@ Object/Array:
 
 Testing using the provided test library might be enough for you, but if you want to save some kb or use your own testing library, makeRule allows you to imprort its validation functionality seperatly to its testing library.
 
-To setup your own testing suite, only require/import the `validator` function. You can then pass an object map of all the your tests, where the key is the name of the test, and the test is a function that recieves the`value` as an argument, and returns true or false. Testing functions recieve the `value` as their **last argument** meaning you can use other arguments that are passed in when creating the test.
+To setup your own testing suite, only require/import the `validator` function. You can then pass an object map of all the your tests, where the key is the name of the test, and the test is a function that recieves the`value` as an argument, and returns true or false. Testing functions receive the `value` as their **last argument** meaning you can use other arguments that are passed in when creating the test.
 
-Custom validators still recieve the standard helper functions `testWith`, `mapValue`, and `required`.
+Custom validators still receive the standard helper functions `testWith`, `mapValue`, and `required`.
 
 ```javascript
 
