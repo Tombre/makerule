@@ -88,7 +88,7 @@ export default function validator(testMap) {
 		return rule.call(this, 'mapValue', (value) => partial(fn, value));	
 	};
 
-	standardTests.required = composeTest('required', value => ((value + '').length > 0), true);
+	standardTests.required = composeTest('required', value => (value != undefined && (value + '').length > 0), true);
 
 	const composedTests = mapValues(testMap, (value, key) => composeTest(key, value));
 	const tests = assign({}, composedTests, standardTests);
