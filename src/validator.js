@@ -66,7 +66,7 @@ export default function validator(testMap) {
 				assignedArgsFn = runIfValue(assignedArgsFn);
 			}
 
-			return makeRule.call(this, name, assignedArgsFn);
+			return rule.call(this, name, assignedArgsFn);
 		}
 	}
 
@@ -79,13 +79,13 @@ export default function validator(testMap) {
 	// Make your own test passing (fn) argument which can either be a predicate or regex
 	standardTests.testWith = function(name, fn) {
 		let testFn = fn instanceof RegExp ? (value => fn.test(value)) : fn;
-		return makeRule.call(this, name, runIfValue(testFn));
+		return rule.call(this, name, runIfValue(testFn));
 	};
 
 	// maps a value into another one and passes it along the chain. This works by returning a function instead of a boolean. The function will be
 	// evaluated in the create result method.
 	standardTests.mapValue = function(fn) {
-		return makeRule.call(this, 'mapValue', (value) => partial(fn, value));	
+		return rule.call(this, 'mapValue', (value) => partial(fn, value));	
 	};
 
 	standardTests.required = composeTest('required', value => ((value + '').length > 0), true);
@@ -97,7 +97,7 @@ export default function validator(testMap) {
 		Export
 	----------------------------------------------------------*/
 
-	const makeRule = function(name, fn = value => true) {
+	const rule = function(name, fn = value => true) {
 
 		let prevFn = this;
 
@@ -150,6 +150,6 @@ export default function validator(testMap) {
 		}
 	}
 
-	return { makeRule, validateWith };
+	return { rule, validateWith };
 
 };
