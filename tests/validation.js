@@ -110,14 +110,6 @@ test('Testing results of isNumeric validator', t => {
 	t.end();
 });
 
-test('Testing results of isNumericFloat validator', t => {	
-	t.ok(tests.isNumericFloat('1.4'), 'does not produce true on correct use');
-	t.ok(tests.isNumericFloat('1'), 'does not produce true on correct use (number only)');
-	t.notOk(tests.isNumericFloat('fwe2332sew'), 'does not produce false on incorrect use (letter)');
-	t.notOk(tests.isNumericFloat(5.4), 'does not produce false on incorrect use (number)');
-	t.end();
-});
-
 test('Testing results of isHexColor validator', t => {	
 	t.ok(tests.isHexColor('#fff'), 'does not produce true on correct use');
 	t.notOk(tests.isHexColor('#ewfw23fwew'), 'does not produce false on incorrect use');
