@@ -127,7 +127,7 @@ Strings:
 - **isHexColor()** - Check if the value is a hex colour.
 - **isURL()** - Check if the value is a URL
 
-__These tests are from the string validation library [validator.js](https://github.com/chriso/validator.js). Refer to that for more information.__
+_These tests are from the string validation library [validator.js](https://github.com/chriso/validator.js). Refer to that for more information._
 
 String/Array:
 
