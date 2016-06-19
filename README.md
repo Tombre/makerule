@@ -16,21 +16,21 @@ The makeRule package comes with a minified version that can be added to the brow
 
 ## Usage
 
-makeRule allows you to create chainable function that can be used to test values.
+makeRule allows you to create chainable functions that can be used to test values.
 
 ```javascript
 import makeRule from 'makeRule';
 
 // functions evaluate in order from left to right
-var rule = makerule.rule().isString().isAlphanumeric().longerThen(5);
+var rule = makeRule.rule().isString().longerThen(5);
 
 rule(3); // =>  { result: false, value: 3, test: 'isString' }
 rule('nope'); // =>  { result: false, value: 'nope', test: 'longerThen' }
 rule('123456'); // =>  { result: true, value: '123456' }
 
 // Because rules are functional and chainable, you can extend them as you go.
-var newRule = rule.lessThen(10);
-rule('a string longer then 10 characters'); // =>  { result: false, value: 'a string longer then 10 characters', test: 'lessThen' }
+var newRule = rule.shorterThen(10);
+newRule('a string longer then 10 characters'); // =>  { result: false, value: 'a string longer then 10 characters', test: 'shorterThen' }
 ```
 
 The result will return true if the value you pass to the rule is `null` or `undefined`. If the test requires a value, add `.required()` to the chain:
@@ -40,7 +40,7 @@ var rule = makerule.rule().isString();
 rule(undefined); // => { result: true, value: undefined }
 
 var ruleRequired = rule.required();
-rule(undefined); // => { result: false, test: required, value: undefined }
+ruleRequired(undefined); // => { result: false, test: 'required', value: undefined }
 ```
 
 You can also write your own tests. To do this, add `.testWith()` to the chain and pass the name of the test, and a predicate function or a regular expression. That function will receive the current value as an argument. Return a boolean true or false to describe if the test passed or failed.
@@ -58,7 +58,7 @@ If you want to change the value as it passes through the tests, you can use `.ma
 
 ```javascript
 // value will mapped to an integer before the isNumber test runs.
-var mapTest = makerule.rule().isString().mapValue(value => parseInt(value, 10).isNumber());
+var mapTest = makerule.rule().isString().mapValue(value => parseInt(value, 10)).isNumber();
 mapTest('10'); // => { result: true, value: 10 }
 ```
 
@@ -112,7 +112,7 @@ Types:
 - **isArray()** - Tests if the value is an Array.
 - **isBool()** - Tests if the value is a Boolean
 - **isNumber()** - Tests if the value is a real number (not NaN)
-- **isInt()** - Tests if the value is an number and integer (does not have a decimal)
+- **isInt()** - Tests if the value is a number and an integer (does not have a decimal)
 - **isFloat()** - Tests if the value is a number and a float (has a decimal)
 
 Strings:
@@ -120,7 +120,7 @@ Strings:
 - **isEmail()** - Test if the value is an email
 - **isCreditCard()** -  Check if the value string is a credit card
 - **isDateString()** - Check if the value is a date formatted like xx/yy/zz
-- **isAlpha()** - Check if the calue string contains only letters (a-zA-Z)
+- **isAlpha()** - Check if the value string contains only letters (a-zA-Z)
 - **isAlphanumeric()** - Check if the value contains only letters and numbers
 - **isDecimalString()** - Check if the value (string) represents a decimal number, such as 0.1, .3, 1.1, 1.00003, 4.0, etc.
 - **isNumeric()** - Check if the value contains only numbers
@@ -131,14 +131,14 @@ __These tests are from the string validation library [validator.js](https://gith
 
 String/Array:
 
-- **longerThen(n)** - Test if the value is longer then than `n`. Compares with the .length property or the value.
-- **shorterThen(n)** - Test if the value is shorter then than `n`. Compares with the .length property or the value.
+- **longerThen(n)** - Test if the value is longer than `n`. Compares with the .length property of the value.
+- **shorterThen(n)** - Test if the value is shorter than `n`. Compares with the .length property of the value.
 
 Number:
 
-- **divisableBy(n)** - Check if the value is divisable by `n`.
-- **greaterThen(n)** - Check if the value is greater then `n`.
-- **lessThen(n)** - Check if the value is less then n.
+- **divisableBy(n)** - Check if the value is divisible by `n`.
+- **greaterThen(n)** - Check if the value is greater than `n`.
+- **lessThen(n)** - Check if the value is less than n.
 
 Bool:
 
@@ -153,14 +153,14 @@ Object/Array:
 ### Helper tests
 
 - **testWith(testName, [fn, regexp])** - Tests a value using a predicate function or regular expression. If you pass a function, that function will receive the current value as the first arguement and must return true or false. If you pass a regular expression, the value will be tested against that regular expression.
-- **mapValue(fn)** - Changes the value being tested at that point in the chain where `fn` is a function the recieves the current value as the first arguemnt and returns another value.
-- **required()** - Tests that the value is not `undefined` or `Null`. If you do not add `required()` to the chain, values will pass through un-tested.
+- **mapValue(fn)** - Changes the value being tested at that point in the chain where `fn` is a function that recieves the current value as the first argument and returns another value.
+- **required()** - Tests that the value is not `undefined` or `Null`. If you do not add `required()` to the chain, these values will pass through un-tested.
  
 ## Custom tests setup
 
-Testing using the provided test library might be enough for you, but if you want to save some kb or use your own testing library, makeRule allows you to imprort its validation functionality seperatly to its testing library.
+Testing using the provided test library might be enough for you, but if you want to save some kb or use your own testing library, makeRule allows you to import its validation functionality separately to its testing library.
 
-To setup your own testing suite, only require/import the `validator` function. You can then pass an object map of all the your tests, where the key is the name of the test, and the test is a function that recieves the`value` as an argument, and returns true or false. Testing functions receive the `value` as their **last argument** meaning you can use other arguments that are passed in when creating the test.
+To setup your own testing suite, only require/import the `validator` function. You can then pass an object map of your custom tests, where the key is the name of the test, and the test is a function that recieves the`value` as an argument, and returns true or false. Testing functions receive the `value` as their **last argument**. This means you can use other arguments when creating the rule to customize the test.
 
 Custom validators still receive the standard helper functions `testWith`, `mapValue`, and `required`.
 
@@ -184,7 +184,7 @@ rule2('this is awesome') // => { result: true, value: 'this is awesome' }
 
 ```
 
-The full test library is also available seperatly.
+The full test library is also available separately.
 
 ```javascript
 import Validator from 'makerule/validator' ;
