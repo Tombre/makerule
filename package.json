@@ -21,7 +21,7 @@
     "validation"
   ],
   "author": "Thomas Leenders",
-  "license": "ISC",
+  "license": "GNU GPLv3",
   "devDependencies": {
     "babel-core": "^6.9.1",
     "babel-eslint": "^6.0.4",
