@@ -19,7 +19,7 @@ The makeRule package comes with a minified version that can be added to the brow
 makeRule allows you to create chainable functions that can be used to test values.
 
 ```javascript
-import makeRule from 'makeRule';
+import makeRule from 'makerule';
 
 // functions evaluate in order from left to right
 var rule = makeRule.rule().isString().longerThan(5);
