@@ -32,13 +32,13 @@ export const isHexColor = value => isString(value) && testHexColor(value);
 export const isURL = value => isString(value) && testURL(value);
 
 // string/array
-export const longerThen = (n, value) => (value.length && value.length > n);
-export const shorterThen = (n, value) => (value.length && value.length < n);
+export const longerThan = (n, value) => (value.length && value.length > n);
+export const shorterThan = (n, value) => (value.length && value.length < n);
 
 // number
 export const divisableBy = (n, value) => (isNumber(value) && value % n === 0);
-export const greaterThen = (n, value) => (isNumber(value) && value > n);
-export const lessThen = (n, value) => (isNumber(value) && value < n);
+export const greaterThan = (n, value) => (isNumber(value) && value > n);
+export const lessThan = (n, value) => (isNumber(value) && value < n);
 
 // Bool
 export const isTrue = value => isBool(value) && value === true;

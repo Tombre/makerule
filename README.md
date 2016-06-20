@@ -22,15 +22,15 @@ makeRule allows you to create chainable functions that can be used to test value
 import makeRule from 'makeRule';
 
 // functions evaluate in order from left to right
-var rule = makeRule.rule().isString().longerThen(5);
+var rule = makeRule.rule().isString().longerThan(5);
 
 rule(3); // =>  { result: false, value: 3, test: 'isString' }
-rule('nope'); // =>  { result: false, value: 'nope', test: 'longerThen' }
+rule('nope'); // =>  { result: false, value: 'nope', test: 'longerThan' }
 rule('123456'); // =>  { result: true, value: '123456' }
 
 // Because rules are functional and chainable, you can extend them as you go.
-var newRule = rule.shorterThen(10);
-newRule('a string longer then 10 characters'); // =>  { result: false, value: 'a string longer then 10 characters', test: 'shorterThen' }
+var newRule = rule.shorterThan(10);
+newRule('a string longer then 10 characters'); // =>  { result: false, value: 'a string longer then 10 characters', test: 'shorterThan' }
 ```
 
 The result will return true if the value you pass to the rule is `null` or `undefined`. If the test requires a value, add `.required()` to the chain:
@@ -67,16 +67,16 @@ mapTest('10'); // => { result: true, value: 10 }
 Most of the time when validating values, you will probably want to get some kind of error message out of it. The `validateWith()` helper function allows you to return error messages from failed tests within the result:
 ```javascript
 // make a test for passwords. testPasswordStrength would be a function which returns true if the password is strong.
-var passwordRule = makeRule.rule()..isAlphanumeric().longerThen(6).testWith('passwordStrength', testPasswordStrength);
+var passwordRule = makeRule.rule().isAlphanumeric().longerThan(6).testWith('passwordStrength', testPasswordStrength);
 
 // the last argument is the default error message
 var testPassword = makeRule.validateWith(passwordRule, { 
 	isAlphanumeric : 'Your password cannot contain any special characters',
-	longerThen: 'Your password must be longer then 6 characters',
+	longerThan: 'Your password must be longer then 6 characters',
 	passwordStrength: 'Your password should contain at least one number and one capital letter'
 });
 
-testPassword('bad'); // => { result: false, value: 'bad', test: 'longerThen', message: 'Your password must be longer then 6 characters' }
+testPassword('bad'); // => { result: false, value: 'bad', test: 'longerThan', message: 'Your password must be longer then 6 characters' }
 testPassword('Areallyg00dp@ssw0rd'); // => { result: true, value: 'Areallyg00dp@ssw0rd' }
 ```
 
@@ -131,14 +131,14 @@ _These tests are from the string validation library [validator.js](https://githu
 
 String/Array:
 
-- **longerThen(n)** - Test if the value is longer than `n`. Compares with the .length property of the value.
-- **shorterThen(n)** - Test if the value is shorter than `n`. Compares with the .length property of the value.
+- **longerThan(n)** - Test if the value is longer than `n`. Compares with the .length property of the value.
+- **shorterThan(n)** - Test if the value is shorter than `n`. Compares with the .length property of the value.
 
 Number:
 
 - **divisableBy(n)** - Check if the value is divisible by `n`.
-- **greaterThen(n)** - Check if the value is greater than `n`.
-- **lessThen(n)** - Check if the value is less than n.
+- **greaterThan(n)** - Check if the value is greater than `n`.
+- **lessThan(n)** - Check if the value is less than n.
 
 Bool:
 
@@ -170,13 +170,13 @@ import Validator from 'makerule/validator' ;
 
 // create a test map
 var testMap = {
-	isGreaterThen5 : value => (value >= 5),
+	isgreaterThan5 : value => (value >= 5),
 	containsString: (str, value) => (value.indexOf(str) >= 0) // accepts an extra str argument
 };
 
 var validation = Validator(testMap);
 
-var rule1 = validation.rule().required().isGreaterThen5();
+var rule1 = validation.rule().required().isgreaterThan5();
 var rule2 = validation.rule().containsString('awesome');
 
 rule1(10) // => { result: true, value: 5 }
@@ -205,11 +205,11 @@ While I haven't fully tested performance for this library, it is generally bette
 	// This might be slow:
 	var rules = [];
 	while (rules.length < 100) {
-		rules.push(makeRule.rule().isNumber().greaterThen(6));
+		rules.push(makeRule.rule().isNumber().greaterThan(6));
 	}
 
 	// This is fast:
-	var rule = makeRule.rule().isNumber().greaterThen(6);
+	var rule = makeRule.rule().isNumber().greaterThan(6);
 	var results = [];
 	while (results.length < 100) {
 		results.push(rule(results.length));

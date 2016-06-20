@@ -127,27 +127,27 @@ test('Testing results of isURL validator', t => {
 	t.end();
 });
 
-test('Testing results of longerThen validator', t => {	
-	t.ok(tests.longerThen(6, 'testfor6'), 'does not produce true on correct use');
-	t.ok(tests.longerThen(3, [1, 2, 3, 4]), 'does not produce true on correct use');
-	t.notOk(tests.longerThen(3, '123'), 'does not produce false on incorrect use');
-	t.notOk(tests.longerThen(2, [1]), 'does not produce false on incorrect use (array)');
+test('Testing results of longerThan validator', t => {	
+	t.ok(tests.longerThan(6, 'testfor6'), 'does not produce true on correct use');
+	t.ok(tests.longerThan(3, [1, 2, 3, 4]), 'does not produce true on correct use');
+	t.notOk(tests.longerThan(3, '123'), 'does not produce false on incorrect use');
+	t.notOk(tests.longerThan(2, [1]), 'does not produce false on incorrect use (array)');
 	t.end();
 });
 
-test('Testing results of shorterThen validator', t => {	
-	t.ok(tests.shorterThen(20, 'testfor6'), 'does not produce true on correct use');
-	t.ok(tests.shorterThen(5, [1, 2, 3, 4]), 'does not produce true on correct use');
-	t.notOk(tests.shorterThen(3, '123'), 'does not produce false on incorrect use');
-	t.notOk(tests.shorterThen(1, [1]), 'does not produce false on incorrect use (array)');
+test('Testing results of shorterThan validator', t => {	
+	t.ok(tests.shorterThan(20, 'testfor6'), 'does not produce true on correct use');
+	t.ok(tests.shorterThan(5, [1, 2, 3, 4]), 'does not produce true on correct use');
+	t.notOk(tests.shorterThan(3, '123'), 'does not produce false on incorrect use');
+	t.notOk(tests.shorterThan(1, [1]), 'does not produce false on incorrect use (array)');
 	t.end();
 });
 
-test('Testing results of shorterThen validator', t => {	
-	t.ok(tests.shorterThen(20, 'testfor6'), 'does not produce true on correct use');
-	t.ok(tests.shorterThen(5, [1, 2, 3, 4]), 'does not produce true on correct use');
-	t.notOk(tests.shorterThen(3, '123'), 'does not produce false on incorrect use');
-	t.notOk(tests.shorterThen(1, [1]), 'does not produce false on incorrect use (array)');
+test('Testing results of shorterThan validator', t => {	
+	t.ok(tests.shorterThan(20, 'testfor6'), 'does not produce true on correct use');
+	t.ok(tests.shorterThan(5, [1, 2, 3, 4]), 'does not produce true on correct use');
+	t.notOk(tests.shorterThan(3, '123'), 'does not produce false on incorrect use');
+	t.notOk(tests.shorterThan(1, [1]), 'does not produce false on incorrect use (array)');
 	t.end();
 });
 
@@ -158,17 +158,17 @@ test('Testing results of divisableBy validator', t => {
 	t.end();
 });
 
-test('Testing results of greaterThen validator', t => {	
-	t.ok(tests.greaterThen(20, 21), 'does not produce true on correct use');
-	t.notOk(tests.greaterThen(3, 1), 'does not produce false on incorrect use');
-	t.notOk(tests.greaterThen(1, '6'), 'does not produce false on incorrect use (array)');
+test('Testing results of greaterThan validator', t => {	
+	t.ok(tests.greaterThan(20, 21), 'does not produce true on correct use');
+	t.notOk(tests.greaterThan(3, 1), 'does not produce false on incorrect use');
+	t.notOk(tests.greaterThan(1, '6'), 'does not produce false on incorrect use (array)');
 	t.end();
 });
 
-test('Testing results of lessThen validator', t => {	
-	t.ok(tests.lessThen(20, 1), 'does not produce true on correct use');
-	t.notOk(tests.lessThen(3, 12), 'does not produce false on incorrect use');
-	t.notOk(tests.lessThen(1, '123'), 'does not produce false on incorrect use (array)');
+test('Testing results of lessThan validator', t => {	
+	t.ok(tests.lessThan(20, 1), 'does not produce true on correct use');
+	t.notOk(tests.lessThan(3, 12), 'does not produce false on incorrect use');
+	t.notOk(tests.lessThan(1, '123'), 'does not produce false on incorrect use (array)');
 	t.end();
 });
 

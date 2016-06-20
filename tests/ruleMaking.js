@@ -26,7 +26,7 @@ test('Test makeRule chaining', t => {
 test('Test makeRule outcomes', t => {
 
 
-	let rule1 = makeRule.rule().isString().isEmail().longerThen(10);
+	let rule1 = makeRule.rule().isString().isEmail().longerThan(10);
 
 	t.doesNotThrow(rule1, 'The validator does not throw');
 	t.equal(typeof rule1('test'), 'object', 'The result of a validation is not an object');
@@ -36,15 +36,15 @@ test('Test makeRule outcomes', t => {
 	t.equal(rule1('test@gmail').test, 'isEmail', 'The test prop of the incorrectly validated value is not correct');
 	t.equal(rule1(1).test, 'isString', 'The name prop of the incorrectly validated value is not correct (number)');
 	t.notOk(rule1('t@g.com').result, 'The result prop of the incorrectly validated value is not false (bad email)');
-	t.equal(rule1('t@g.com').test, 'longerThen', 'The name prop of the incorrectly validated test is not correct (bad email)');
+	t.equal(rule1('t@g.com').test, 'longerThan', 'The name prop of the incorrectly validated test is not correct (bad email)');
 
 	// mapping
 
-	let rule2 = makeRule.rule().isString().mapValue(value => parseInt(value, 10)).greaterThen(5);
+	let rule2 = makeRule.rule().isString().mapValue(value => parseInt(value, 10)).greaterThan(5);
 
 	t.ok(rule2('6').result, 'The map value mapped correct for a valid test');
 	t.notOk(rule2('2').result, 'The map value mapped correct for an invalid test');
-	t.equal(rule2('2').test, 'greaterThen', 'The map value mapped correct for a valid test');
+	t.equal(rule2('2').test, 'greaterThan', 'The map value mapped correct for a valid test');
 	t.equal(rule2('6').value, 6, 'The test prop of the incorrectly validated value is not correct');
 
 	t.end();
@@ -64,7 +64,7 @@ test('Test makeRule treatment ', t => {
 	t.doesNotThrow(rule3, 'makeRule throws when this value is changed');
 	t.ok(rule3().result, 'makeRule fails incorrectly when this value is changed');
 
-	let rule4 = makeRule.rule().isString().longerThen(5).bind(t);
+	let rule4 = makeRule.rule().isString().longerThan(5).bind(t);
 
 	t.notOk(rule4('123').result, 'makeRule passes incorrectly when this value is changed');
 	
@@ -108,8 +108,8 @@ test('Testing mapTest functionality', t => {
 
 test('validateWith outcomes', t => {
 
-	let validator = makeRule.rule().isString().isEmail().longerThen(10);
-	let rule = makeRule.validateWith(validator, { isEmail: 'bad email', longerThen: 'bad length'}, 'default');
+	let validator = makeRule.rule().isString().isEmail().longerThan(10);
+	let rule = makeRule.validateWith(validator, { isEmail: 'bad email', longerThan: 'bad length'}, 'default');
 
 	t.equal(rule('notemail').message, 'bad email', 'validateWith messasge not correct');
 	t.equal(rule(10).message, 'default', 'validateWith message default not correct');
