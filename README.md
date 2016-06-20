@@ -67,11 +67,10 @@ mapTest('10'); // => { result: true, value: 10 }
 Most of the time when validating values, you will probably want to get some kind of error message out of it. The `validateWith()` helper function allows you to return error messages from failed tests within the result:
 ```javascript
 // make a test for passwords. testPasswordStrength would be a function which returns true if the password is strong.
-var passwordRule = makeRule.rule().isAlphanumeric().longerThan(6).testWith('passwordStrength', testPasswordStrength);
+var passwordRule = makeRule.rule().longerThan(6).testWith('passwordStrength', testPasswordStrength);
 
-// the last argument is the default error message
+// pass the rule, and a map of tests to use, where the property key is the name of the test that might fail
 var testPassword = makeRule.validateWith(passwordRule, { 
-	isAlphanumeric : 'Your password cannot contain any special characters',
 	longerThan: 'Your password must be longer then 6 characters',
 	passwordStrength: 'Your password should contain at least one number and one capital letter'
 });
