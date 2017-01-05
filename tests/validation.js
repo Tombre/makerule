@@ -16,6 +16,7 @@ test('Testing results of isString validator', t => {
 
 test('Testing results of isArray validator', t => {	
 	t.ok(tests.isArray([1, 5, 6]), 'does not produce true on correct use');
+	t.ok(tests.isArray(['1', '5', '6']), 'does not produce true on correct use');
 	t.notOk(tests.isArray({ a : 1}), 'does not produce false on incorrect use (null)');
 	t.notOk(tests.isArray(arguments), 'does not produce false on incorrect use (arguments)');
 	t.notOk(tests.isArray(null), 'does not produce false on incorrect use (null)');
@@ -162,6 +163,7 @@ test('Testing results of greaterThan validator', t => {
 	t.ok(tests.greaterThan(20, 21), 'does not produce true on correct use');
 	t.notOk(tests.greaterThan(3, 1), 'does not produce false on incorrect use');
 	t.notOk(tests.greaterThan(1, '6'), 'does not produce false on incorrect use (array)');
+	t.notOk(tests.greaterThan(0, -10), 'does not produce true on 0 number');
 	t.end();
 });
 

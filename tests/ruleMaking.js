@@ -47,6 +47,15 @@ test('Test makeRule outcomes', t => {
 	t.equal(rule2('2').test, 'greaterThan', 'The map value mapped correct for a valid test');
 	t.equal(rule2('6').value, 6, 'The test prop of the incorrectly validated value is not correct');
 
+	// Mutation
+
+	let value = ['1', '2']; 
+	let rule3 = makeRule.rule().mapValue(v => {
+		t.ok(v === value, 'The chain does not mutate the value');
+		return v;
+	});
+	rule3(value);
+
 	t.end();
 
 });

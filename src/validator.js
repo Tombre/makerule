@@ -1,4 +1,4 @@
-import partial from 'partial';
+import partial from 'lodash.partial';
 
 export default function validator(testMap) {
 
@@ -25,6 +25,13 @@ export default function validator(testMap) {
 		Helper
 	----------------------------------------------------------*/
 
+	function isRequired(value) {
+		if (value === undefined || value === null || (typeof value === 'string' && value.length === 0)) {
+			return false;
+		}
+		return true;
+	}
+
 	// assigns source objects props/vals to the first object in the arguments
 	 function assign() {
 		let objs = [...arguments].slice(1);
@@ -49,10 +56,10 @@ export default function validator(testMap) {
 	// Returns a function that will return the result of a testFn if the value being passed in exists
 	function runIfValue(testFn) {
 		return function(value) {
-			if (value == undefined || (value + '').length === 0) {
+			if (isRequired(value) === false) {
 				return true;
 			}
-			return testFn(value);
+			return (Boolean(testFn(value)));
 		}
 	}
 
@@ -85,10 +92,13 @@ export default function validator(testMap) {
 	// maps a value into another one and passes it along the chain. This works by returning a function instead of a boolean. The function will be
 	// evaluated in the create result method.
 	standardTests.mapValue = function(fn) {
-		return rule.call(this, 'mapValue', (value) => partial(fn, value));	
+		return rule.call(this, 'mapValue', (value) => {
+			return partial(fn, value)
+		});	
 	};
 
-	standardTests.required = composeTest('required', value => (value != undefined && (value + '').length > 0), true);
+	// requires that a value be present through the chain. It will not be if the value is an empty string, null, or undefined
+	standardTests.required = composeTest('required', value => isRequired(value), true);
 
 	const composedTests = mapValues(testMap, (value, key) => composeTest(key, value));
 	const tests = assign({}, composedTests, standardTests);
@@ -107,7 +117,7 @@ export default function validator(testMap) {
 				if (prevOutcome.result === false) {
 					return prevOutcome
 				}
-				if (prevOutcome.value != undefined) {
+				if (prevOutcome.value !== undefined) {
 					return createResult(name, fn(prevOutcome.value), prevOutcome.value);	
 				}
 			}
