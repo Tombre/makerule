@@ -14,10 +14,7 @@ export const equals = (match, value) => (match === value);
 // types
 export const isString = value => (typeof value === 'string');
 export const isObject = value => (typeof value === 'object' && value != null && !(value instanceof Array));
-export const isArray = value => {
-	console.log(value);
-	return (typeof value === 'object' && value != null && value instanceof Array)
-};
+export const isArray = value => (typeof value === 'object' && value != null && value instanceof Array);
 export const isBool = value => (typeof value === 'boolean');
 export const isNumber = value => (typeof value === 'number' && !isNaN(value));
 export const isInt = (value) => (isNumber(value) && (value % 1 === 0));
